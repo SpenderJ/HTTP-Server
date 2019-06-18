@@ -42,6 +42,8 @@ int					content_add(t_http *data, char *key,
 t_content			*content_init(char *key, char *value, uint8_t flag);
 void				content_free(t_content *node);
 int					content_parse(t_http *data, char *content);
+uint8_t				*locate(const char *content,
+						size_t size, const char *boundary);
 
 typedef struct		s_fields
 {

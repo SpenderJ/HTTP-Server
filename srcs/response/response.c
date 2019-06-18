@@ -22,18 +22,23 @@
 
 char				*get_date(void)
 {
-	char			*date;
+	char			date[32];
+	static const char	* const weekday[7] = { "Sun","Mon","Tue",
+						"Wed","Thr","Fri","Sat" };
+	static const char	* const month[12] = { "Jan","Feb","Mar","Apr",
+						"May","Jun","Jul","Aug","Sep",
+						"Oct","Nov","Dec" };
 	time_t			t;
 	struct tm		*tm;
 
 	time(&t);
-	tm = localtime(&t);
-	if ((date = malloc(sizeof(char) * 30)) == NULL)
-		return (NULL);
-	memset(date, 0, sizeof(char) * 30);
-	sprintf(date, "%d-%d-%d %d:%d:%d", tm->tm_year + 1900, tm->tm_mon + 1,
-			tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
-	return (date);
+	tm = gmtime(&t);
+	snprintf(date, sizeof date, "%s, %02d %s %04d %02d:%02d:%02d GMT",
+			weekday[tm->tm_wday], tm->tm_mday, month[tm->tm_mon],
+			tm->tm_year + 1900, tm->tm_hour, tm->tm_min,
+			tm->tm_sec);
+	date[sizeof date-1] = '\0';
+	return strdup(date);
 }
 
 /*

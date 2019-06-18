@@ -25,6 +25,7 @@
 # define PORT			6060
 # define CONNECTION		4
 # define TIME_OUT		10
+# define CRLF			"\r\n"
 
 # define PAGE_SIZE		getpagesize()
 

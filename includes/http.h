@@ -22,12 +22,14 @@
 ** HTTP Server configuration
 */
 
-# define PORT			6060
-# define CONNECTION		4
+# define DEFAULT_PORT		6060
+# define CONNECTION_BACKLOG	4
 # define TIME_OUT		10
 # define CRLF			"\r\n"
 
+#ifndef PAGE_SIZE
 # define PAGE_SIZE		getpagesize()
+#endif
 
 typedef struct		s_http
 {
@@ -49,15 +51,13 @@ typedef struct		s_content
 	char			*key;
 	char			*value;
 	uint8_t			flag;
-}					t_content;
+}			t_content;
 
-extern int			g_fd;
+int				socket_int(void);
+int				socket_bind(int fd, int port, char **address);
+int				socket_accept(int fd, char **address);
 
-int					socket_int(void);
-int					socket_bind(int fd, int port, char **address);
-int					socket_accept(int fd, char **address);
-
-int					request(int fd, t_http **data, int *status);
+int				request(int fd, t_http **data, int *status);
 
 void				exit_server(void);
 void				sigstop(int sig);

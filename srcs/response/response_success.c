@@ -30,13 +30,13 @@ int					end_connection_success(t_http *request, int reponse,
 	answer->protocol = (request == NULL) ? 1 : request->protocol;
 	answer->fd = fd;
 	ft_free(answer->complete_path);
-	if (((answer->complete_path = concat(WEBSITE_FOLDER_PATH, request->path))
+	if (((answer->complete_path = concat(_g.webdir, request->path))
 				== NULL) || (answer->date = get_date()) == NULL)
 		return (end_connection_error(request, IER, fd, answer));
 	if (!request->path || request->path[0] == '\0' || strcmp(request->path, "/")
 			== 0)
 		if ((ft_free(answer->complete_path) == 0)
-				&& (answer->complete_path = concat(WEBSITE_FOLDER_PATH,
+				&& (answer->complete_path = concat(_g.webdir,
 						"/index.html")) == NULL)
 			return (end_connection_error(request, IER, fd, answer));
 	if (((answer->file_fd = open(answer->complete_path, O_RDONLY)) < 0)

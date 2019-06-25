@@ -24,7 +24,7 @@ char				*get_date(void)
 {
 	char			date[32];
 	static const char	* const weekday[7] = { "Sun","Mon","Tue",
-						"Wed","Thr","Fri","Sat" };
+						"Wed","Thu","Fri","Sat" };
 	static const char	* const month[12] = { "Jan","Feb","Mar","Apr",
 						"May","Jun","Jul","Aug","Sep",
 						"Oct","Nov","Dec" };
@@ -92,13 +92,10 @@ t_status			g_status[STATUS_COUNT] = {
 ** Find the good response message depending on the value sent and return it
 */
 
-char				*get_reponse_message(int reponse)
+const char			*get_reponse_message(int reponse_code)
 {
-	int				i;
-
-	i = -1;
-	while (++i <= SERVICE_UNAVAILABLE)
-		if (g_status[i].code == reponse)
+	for (size_t i=0; i < STATUS_COUNT; ++i)
+		if (g_status[i].code == reponse_code)
 			return (g_status[i].name);
 	return ("Unhandled error");
 }
@@ -160,7 +157,7 @@ int					response(t_http *request, int fd)
 	answer->fd = fd;
 	if (request->method == 0 || request->method > METHOD_PUT)
 		return (end_connection_error(request, NOT_IMPLEMENTED, fd, answer));
-	concatted = concat(WEBSITE_FOLDER_PATH, request->path);
+	concatted = concat(_g.webdir, request->path);
 	if ((!request->path || stat(concatted, &sb) == -1) && ft_free(concatted)
 			== 0)
 		return (start_api_response(request, answer));

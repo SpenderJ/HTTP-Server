@@ -9,7 +9,7 @@
 
 static int			write_connection_error(t_reponse *answer)
 {
-	int		size;
+	ssize_t		size;
 	int		reponse;
 	char	buff[PAGE_SIZE];
 
@@ -36,7 +36,7 @@ int					end_connection_error(t_http *request, int reponse, int fd,
 	answer->protocol = (request == NULL) ? 1 : request->protocol;
 	answer->fd = fd;
 	sprintf(str, "%d", reponse);
-	if ((((answer->complete_path = concat(ERROR_FOLDER_PATH, str)) == NULL)
+	if ((((answer->complete_path = concat(ERROR_DIR_PATH, str)) == NULL)
 				|| ((answer->complete_path = concat(answer->complete_path,
 							".html")) == NULL)) && reponse_free(answer) == 0)
 		return (response_error(fd, request, reponse));
